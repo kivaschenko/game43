@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#-*- coding:utf-8 -*-
 """
 *Map
  -next_scene
@@ -38,72 +40,126 @@ import sys
 import random
 import textwrap
 import phrases
-from statemachine import StateMachine
-
-def start_state():
-    print(textwrap.dedent(phrases.START_INTRODUCTION))
-    choice = input("--> ")
-    if choice == "We must seek compromises.":
-        print(textwrap.dedent(phrases.COMPROMISES))
-        newState = "money"
-    elif choice == "I can do it without money!":
-        print(textwrap.dedent(phrases.NO_MONEY))
-        newState = "loser"
-    else:
-        print("DOESN'T COMPUTE!")
-        continue
 
 
-def money_state():
-    print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
-    choice = input("--> ")
-    if choice == "join the consolidated opposition":
-        print(textwrap.dedent(phrases.ANTI_CORRUPTION))
-        newState = "loser"
-    elif choice == "No":
-        print(textwrap.dedent())
-        newState = "loser"
-    else:
-        print("DOESN'T COMPUTE!")
-        continue
+class SomeState(object):
+    def enter(self):
+        print("This condition has not yet been written.")
+        print("Subclass it and implement enter().")
+        exit(1)
 
-def revolution_state():
+class StartState(SomeState):
+    def enter(self):
+        print(textwrap.dedent(phrases.START_INTRODUCTION))
+        choice = input("--> ")
+        if choice == "We must seek compromises.":
+            print(textwrap.dedent(phrases.COMPROMISES))
+            newState = "Money"
+        elif choice == "I can do it without money!":
+            print(textwrap.dedent(phrases.NO_MONEY))
+            newState = "Loser"
+        else:
+            print("DOESN'T COMPUTE!")
+            return start_state()
+        return newState
+
+class MoneyState(SomeState):
+	def enter():
+		print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
+		choice = input("--> ")
+		if choice == "join the consolidated opposition":
+		    print(textwrap.dedent(phrases.ANTI_CORRUPTION))
+		    newState = "Loser"
+		elif choice == "No":
+		    print(textwrap.dedent())
+		    newState = "Loser"
+		else:
+		    print("DOESN'T COMPUTE!")
+		    return enter()
+		return newState
+
+def RevolutionState():
     pass
 
-def first_election_state():
+def FirstElectionState():
     pass
 
-def second_election():
+def SecondElectionState():
     pass
 
-def loser_state():
-    jokes = phrases.JOKES
-    joke = random.choice(jokes)
-    print("-" * len(joke))
-    print(joke)
-    print("-" * len(joke))
-    print("\tYou lose!" * 3)
+class LoserState():
+    def enter(self):
+        jokes = phrases.JOKES
+        joke = random.choice(jokes)
+        print("-" * len(joke))
+        print(joke)
+        print("-" * len(joke))
+        print("\tYou lose!" * 3)
+        exit(1)
 
-def president_state():
-    print(textwrap.dedent(phrases.INAUGURATION))
+def PresidentState():
+    def enter(self):
+        print(textwrap.dedent(phrases.INAUGURATION))
+        exit(1)
 
-def premier_ministre():
+class PremierMinistreState(SomeState):
+    def enter(self):
         jokes = phrases.PREMIER_MINISTRE
         joke = random.choice(jokes)
         print("#" * len(joke))
         print(joke)
         print("#" * len(joke))
+        exit(1)
 
 
-if __name__ == '__main__':
-    race = StateMachine()
-    race.add_state("Start", start_state)
-    race.add_state("Money", money_state)
-    race.add_state("Revolution", revolution_state)
-    race.add_state("First_Election", first_election_state)
-    race.add_state("Second_Election", second_election)
-    race.add_state("Loser", loser_state, end_state=1)
-    race.add_state("President", president_state, end_state=1)
-    race.add_state("Premier_Ministre", premier_ministre, end_state=1)
-    race.set_start("Start")
-    race.run()
+class Map(object):
+
+    def __init__(self, start_state):
+        """
+        This is a map of major milestones and game handlers.
+        In the dictionary, all class handlers are accessible by the key.
+        In the list of final states only those handlers on which the game ends.
+        """
+        self.start_state = start_state
+        self.handlers = {
+            "Start": StartState(),
+            "Money": MoneyState(),
+            "Revolution": RevolutionState(),
+            "First_Election": FirstElectionState(),
+            "Second_Election": SecondElectionState(),
+            "Loser": LoserState(),
+            "President": PresidentState(),
+            "Premier_Ministre": PremierMinistreState(),
+        }
+        self.endStates = [
+            LoserState(),
+            PresidentState(),
+            PremierMinistreState(),
+        ]
+    def next_state(self, newState):
+        self.newState = newState
+        state = self.handlers[self.newState]
+        return state.enter()
+
+#    def opening_state(self):
+#        return state.enter()
+
+class Engine(object):
+    def __init__(self, state_map):
+        self.state_map = state_map  #  self.state_map = <__main__.Map object at 0x7f0d60d25908>
+    def play(self):
+        current_state = self.state_map.next_state()
+        print("current_state: {}".format(current_state))
+        last_state = self.scene_map.endStates
+        print("last_state: {}".format(last_state))
+        while current_state not in last_state:
+            next_state_name = current_scene.enter()
+            current_state = self.state_map.next_state(next_scene_name)
+
+            current_state.enter()
+
+
+a_map = Map('Start')
+a_map.next_state(newState)
+a_game = Engine(a_map)
+a_game.play()

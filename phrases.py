@@ -68,11 +68,13 @@ INAUGURATION = """
     #############################
     ##### Ta-da-a! You won! #####
     ### Now You are PRESIDENT! ##
-    ### \_|$|_/**\$/**\_|$|_/ ###
+    ### \_|$|_/**\*/**\_|$|_/ ###
     #############################
 """
 PREMIER_MINISTRE = [
     "A blessing in disguise.",
     "With a lousy lamb, at least with a coat of wool.",
     "It takes two to tango.",
+    "Let sleeping dogs lie!",
+    "Piece of cake!",
 ]
