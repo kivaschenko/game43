@@ -2,23 +2,18 @@
 #-*- coding:utf-8 -*-
 """
 *Map
- -next_scene
- -opening_scene
+ -next_state
+ -opening_state
 *Engine
  -play
-*Scene
+*State
  - enter
- *Own Party
- *First Election
- *Second Election
+ *Money
+ *FirstElection
+ *SecondElection
  *Loser
  *President
  *Premier Ministre
- *Oligarch
- *Opposition Leader
- *Overseas Partners
- *North Neighbors
- *Radicals
  *Revolution
 
 give money
@@ -42,52 +37,50 @@ import textwrap
 import phrases
 
 
-class SomeState(object):
+class State(object):
     def enter(self):
         print("This condition has not yet been written.")
         print("Subclass it and implement enter().")
         exit(1)
 
-class StartState(SomeState):
+class Start(State):
     def enter(self):
         print(textwrap.dedent(phrases.START_INTRODUCTION))
         choice = input("--> ")
         if choice == "We must seek compromises.":
             print(textwrap.dedent(phrases.COMPROMISES))
-            newState = "Money"
+            return "Money"
         elif choice == "I can do it without money!":
             print(textwrap.dedent(phrases.NO_MONEY))
-            newState = "Loser"
+            return "Loser"
         else:
             print("DOESN'T COMPUTE!")
             return start_state()
-        return newState
 
-class MoneyState(SomeState):
+class Money(State):
 	def enter():
 		print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
 		choice = input("--> ")
 		if choice == "join the consolidated opposition":
 		    print(textwrap.dedent(phrases.ANTI_CORRUPTION))
-		    newState = "Loser"
+		    return "Loser"
 		elif choice == "No":
 		    print(textwrap.dedent())
-		    newState = "Loser"
+		    return "Loser"
 		else:
 		    print("DOESN'T COMPUTE!")
 		    return enter()
-		return newState
 
-def RevolutionState():
+def Revolution():
     pass
 
-def FirstElectionState():
+def FirstElection():
     pass
 
-def SecondElectionState():
+def SecondElection():
     pass
 
-class LoserState():
+class Loser():
     def enter(self):
         jokes = phrases.JOKES
         joke = random.choice(jokes)
@@ -97,12 +90,12 @@ class LoserState():
         print("\tYou lose!" * 3)
         exit(1)
 
-def PresidentState():
+def President():
     def enter(self):
         print(textwrap.dedent(phrases.INAUGURATION))
         exit(1)
 
-class PremierMinistreState(SomeState):
+class PremierMinistre(State):
     def enter(self):
         jokes = phrases.PREMIER_MINISTRE
         joke = random.choice(jokes)
@@ -114,31 +107,30 @@ class PremierMinistreState(SomeState):
 
 class Map(object):
 
-    def __init__(self, start_state):
+	        handlers = {
+		        "Start": Start(),
+		        "Money": Money(),
+		        "Revolution": Revolution(),
+		        "First_Election": FirstElection(),
+		        "Second_Election": SecondElection(),
+		        "Loser": Loser(),
+		        "President": President(),
+		        "Premier_Ministre": PremierMinistre(),
+		        "Finish": Finish()
+		    }
+		    
+    def __init__(self, start):
         """
         This is a map of major milestones and game handlers.
         In the dictionary, all class handlers are accessible by the key.
         In the list of final states only those handlers on which the game ends.
         """
-        self.start_state = start_state
-        self.handlers = {
-            "Start": StartState(),
-            "Money": MoneyState(),
-            "Revolution": RevolutionState(),
-            "First_Election": FirstElectionState(),
-            "Second_Election": SecondElectionState(),
-            "Loser": LoserState(),
-            "President": PresidentState(),
-            "Premier_Ministre": PremierMinistreState(),
-        }
-        self.endStates = [
-            LoserState(),
-            PresidentState(),
-            PremierMinistreState(),
-        ]
-    def next_state(self, newState):
-        self.newState = newState
-        state = self.handlers[self.newState]
+        self.start = start
+
+
+    def next_state(self, new_state):
+        self.new_state = new_state
+        state = self.handlers[self.new_state]
         return state.enter()
 
 #    def opening_state(self):
