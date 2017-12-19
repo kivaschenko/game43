@@ -48,39 +48,66 @@ class Scene(object):
             You have few possibilities but some variants are maybe.
 
             You can:
-            - "I'm gonna join to the president's party!" ,
-            - "I'm gonna join to opposition!" ,
-            - "I'm gonna make own political party!" ,
-            - "I'am gonna go by other way!"
+             - "To achieve this goal, we must seek compromises.
+                Politics is the art of the possible." ,
+
+             - "I do not need money! I do not want to depend on anyone.
+                I can do it without money."
 
             What the strategy you will choice?"""))
         choice = input("--> ")
-        if choice == "I'm gonna join to the president's party!":
-            print(textwrap.dedent("""
-            You must pay 3 millions bucks for place in party!
-            Look for money, bro and "jump on the bandwagon"!"""))
-            return "oligarch"
-        elif choice == "I'm gonna join to opposition!":
+        if choice == "We must seek compromises.":
             print(textwrap.dedent("""
             Every cloud has a silver lining!
+            You must pay 3 millions bucks for part in race!
+            Look for money, bro and "jump on the bandwagon"!
             We could do with the extra cash, Bro ))."""))
-            return "opposition_leader"
-        elif choice == "I'm gonna make own political party!":
+            return "money"
+        elif choice == "I can do it without money!":
             print(textwrap.dedent("""
             Actions speak louder than words!
-            At the drop of a hat!"""))
-            return "overseas_partners"
-        elif choice == "I'am gonna go by other way!":
-            print(textwrap.dedent("""
-            Don't count your chickens before the eggs have hatched!
-            But still need supporters..."""))
-            return "radicals"
+            No money no honey!"""))
+            return "loser"
         else:
             print("DOESN'T COMPUTE!")
             return "scene"
 
-class OwnParty(Scene):
-    pass
+class Money(Scene):
+    def enter(self):
+        print(textwrap.dedent("""
+            It's big money, brother!
+            You have three options today.
+
+            You can conclude an agreement with foreign partners
+            and promise the development of democracy in the country.
+            Then you will be helped to create your new party
+            and join the consolidated opposition.
+
+            The second case is when you take money from both
+            the oligarch and foreign partners at the same time,
+            but they do not know about each other.
+            Then you make your own political party to go your own way.
+
+            Thirdly. Circumstances are such that you will be able to agree
+            with only one of the oligarchs to create a new political party.
+            Do you promise to service me at least 5 years
+            and lobby his interests in parliament."""))
+        choice = input("--> ")
+        if choice == "agreement with foreign partners and join the consolidated opposition":
+            print(textwrap.dedent("""
+            Two month later...
+            The Anti-Corruption Bureau starts an investigation
+            and you are a suspect.
+            "A hot potato"."""))
+            return "loser"
+        elif choice == "No":
+            print(textwrap.dedent("""
+            "No money no honey".
+            All debts must be paid."""))
+            return "loser"
+        else:
+            print("DOESN'T COMPUTE!")
+            return "oligarch"
 
 class FirstElection(Scene):
     pass
@@ -98,69 +125,27 @@ class Loser(Scene):
         "Can't judge a book by its cover.",
         "Cry over spilt milk.",
         "Curiosity killed the cat",
-    ]    
+    ]
     def print_joke(self):
         joke = random.choice(jokes)
         print("You lose!")
         print(joke)
-        
+        exit(1)
+
+
 class President(Scene):
     pass
 
 class PremierMinistre(Scene):
     pass
 
-class Oligarch(Scene):
-    def enter(self):
-        print(textwrap.dedent("""
-            This a very big money, guy!
-            Do you promise to service me at least 5 years
-            and lobby my interests in parliament?
-            Sign the contract by your blood!
-            Do you sign?"""))
-        choice = input("--> ")
-        if choice == "Yes":
-            print(textwrap.dedent("""
-            Two month later...
-            The Anti-Corruption Bureau starts an investigation
-            and you are a suspect.
-            "A hot potato"."""))
-            return "loser"
-        elif choice == "No":
-            print(textwrap.dedent("""
-            "No money no honey".
-            All debts must be paid."""))
-            return "loser"
-        else:
-            print("DOESN'T COMPUTE!")
-            return "oligarch"
-
-class OppositionLeader(Scene):
-    def enter(self):
-        print(textwrap.dedent("""
-        To my knowledge you could not useful to opposition party.
-        Good lucky!"""))
-        return "loser"
-
-class OverseasPartners(Scene):
-    pass
-
-class NorthNeighbors(Scene):
-    pass
-
-class Radicals(Scene):
-    pass
-
 class Map(object):
     scenes_dict = {
         "scene": Scene(),
-        "oligarch": Oligarch(),
-        "opposition_leader": OppositionLeader(),
-        "overseas_partners": OverseasPartners(),
-        "north_neighbors": NorthNeighbors(),
-        "radicals": Radicals(),
+        "money": Money(),
         "loser": Loser(),
-        "own_party": OwnParty(),
+        "first_election": FirstElection,
+        "second_election": SecondElection,
         "revolution": Revolution(),
         "president": President(),
         "premier_ministre": PremierMinistre,
@@ -178,8 +163,8 @@ class Engine(object):
         self.scene_map = scene_map
     def run(self):
         current_scene = self.scene_map.opening_scene()
-        last_scene = self.scene_map.next_scene('president')  # trouble 
-        # - i have not one last scene 
+        last_scene = self.scene_map.next_scene('president')  # trouble
+        # - i have not one last scene
         while current_scene != last_scene:
             next_scene_name = current_scene.enter()
             current_scene = self.scene_map.next_scene(next_scene_name)
@@ -190,7 +175,3 @@ class Engine(object):
 a_map = Map("scene")
 a_race = Engine(a_map)
 a_race.run()
-
-
-
-
