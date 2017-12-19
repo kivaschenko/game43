@@ -37,35 +37,17 @@ strategy choice
 import sys
 import random
 import textwrap
+import phrases
 from statemachine import StateMachine
 
 def start_state():
-    print(textwrap.dedent("""
-        You are in Ukraine one year before the presidential elections
-        and you want to take this post through elections or another way.
-        You agree at least get post of premier ministre too, for begin.
-        You have few possibilities but some variants are maybe.
-
-        You can:
-         - "To achieve this goal, we must seek compromises.
-            Politics is the art of the possible." ,
-
-         - "I do not need money! I do not want to depend on anyone.
-            I can do it without money."
-
-        What the strategy you will choice?"""))
+    print(textwrap.dedent(phrases.START_INTRODUCTION))
     choice = input("--> ")
     if choice == "We must seek compromises.":
-        print(textwrap.dedent("""
-        Every cloud has a silver lining!
-        You must pay 3 millions bucks for part in race!
-        Look for money, bro and "jump on the bandwagon"!
-        We could do with the extra cash, Bro ))."""))
+        print(textwrap.dedent(phrases.COMPROMISES))
         newState = "money"
     elif choice == "I can do it without money!":
-        print(textwrap.dedent("""
-        Actions speak louder than words!
-        No money no honey!"""))
+        print(textwrap.dedent(phrases.NO_MONEY))
         newState = "loser"
     else:
         print("DOESN'T COMPUTE!")
@@ -73,42 +55,19 @@ def start_state():
 
 
 def money_state():
-    print(textwrap.dedent("""
-        It's big money, brother!
-        You have three options today.
-
-        You can conclude an agreement with foreign partners
-        and promise the development of democracy in the country.
-        Then you will be helped to create your new party
-        and join the consolidated opposition.
-
-        The second case is when you take money from both
-        the oligarch and foreign partners at the same time,
-        but they do not know about each other.
-        Then you make your own political party to go your own way.
-
-        Thirdly. Circumstances are such that you will be able to agree
-        with only one of the oligarchs to create a new political party.
-        Do you promise to service me at least 5 years
-        and lobby his interests in parliament."""))
+    print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
     choice = input("--> ")
-    if choice == "agreement with foreign partners and join the consolidated opposition":
-        print(textwrap.dedent("""
-        Two month later...
-        The Anti-Corruption Bureau starts an investigation
-        and you are a suspect.
-        "A hot potato"."""))
+    if choice == "join the consolidated opposition":
+        print(textwrap.dedent(phrases.ANTI_CORRUPTION))
         newState = "loser"
     elif choice == "No":
-        print(textwrap.dedent("""
-        "No money no honey".
-        All debts must be paid."""))
+        print(textwrap.dedent())
         newState = "loser"
     else:
         print("DOESN'T COMPUTE!")
         continue
 
-def revolution():
+def revolution_state():
     pass
 
 def first_election_state():
@@ -117,28 +76,34 @@ def first_election_state():
 def second_election():
     pass
 
-
 def loser_state():
-    jokes = [
-        "Add insult to injury.",
-        "Bite off more than you can chew.",
-        "Can't judge a book by its cover.",
-        "Cry over spilt milk.",
-        "Curiosity killed the cat",
-    ]
+    jokes = phrases.JOKES
     joke = random.choice(jokes)
-    print("You lose!")
+    print("-" * len(joke))
     print(joke)
-    exit(1)
+    print("-" * len(joke))
+    print("\tYou lose!" * 3)
 
 def president_state():
-    print(textwrap.dedent("""
-    ##### Ta-da-a! You won! #####
-    ### Now You are President! ##
-    ### \_|$|_/**\$/**\_|$|_/ ###""")
-    exit(1)
+    print(textwrap.dedent(phrases.INAUGURATION))
 
 def premier_ministre():
-    pass
+        jokes = phrases.PREMIER_MINISTRE
+        joke = random.choice(jokes)
+        print("#" * len(joke))
+        print(joke)
+        print("#" * len(joke))
 
-race = StateMachine()
+
+if __name__ == '__main__':
+    race = StateMachine()
+    race.add_state("Start", start_state)
+    race.add_state("Money", money_state)
+    race.add_state("Revolution", revolution_state)
+    race.add_state("First_Election", first_election_state)
+    race.add_state("Second_Election", second_election)
+    race.add_state("Loser", loser_state, end_state=1)
+    race.add_state("President", president_state, end_state=1)
+    race.add_state("Premier_Ministre", premier_ministre, end_state=1)
+    race.set_start("Start")
+    race.run()
