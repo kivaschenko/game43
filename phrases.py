@@ -52,8 +52,8 @@ REVOLUTION_INTRODUCTION = """
     You made a deal with radical nationalists and made a revolution.
 	Currently, there is no government in the country.
 
-	[1] You might want to use this situation 
-		and get power in your hands right away. 
+	[1] You might want to use this situation
+		and get power in your hands right away.
 		You can declare yourself President.
 		Will you seek help from the military?
 
@@ -84,22 +84,68 @@ PREMIER_MINISTRE = [
     "Piece of cake!",
 ]
 WITH_OPPO_TO_1ST_ELECT = """
-    In a joint union, your party and other oppositionists, 
-    you go to the polls. There are all chances to win 
+    In a joint union, your party and other oppositionists,
+    you go to the polls. There are all chances to win
     if the campaign is properly conducted.
 """
 DEAL_WITH_RADICALS = """
-    You have money already and are determined. 
-    You are sure that the people will support you 
-    and the radical-minded militants will help 
-    make the revolution. Forward! 
-    Now a favorable situation - the current 
+    You have money already and are determined.
+    You are sure that the people will support you
+    and the radical-minded militants will help
+    make the revolution. Forward!
+    Now a favorable situation - the current
     government has a very low support rating.
 """
 DICTATOR = """
-    You became the President thanks to the support 
-    of the military, but this did not support the world community. 
-    You were called dictator and the country fell under sanctions. 
-    Your closest supporters and yesterday's friends betrayed you. 
+    You became the President thanks to the support
+    of the military, but this did not support the world community.
+    You were called dictator and the country fell under sanctions.
+    Your closest supporters and yesterday's friends betrayed you.
     You fled the country.
+"""
+FIRST_ELECTION_INTRODUCTION = """
+    The election race is gaining momentum and you are in the topic.
+    The elections promise to be tough and dirty, pour tons of compromising
+    material to discredit rivals, big money for PR, fraud and voter bribery,
+    intimidation of members of election commissions and other attributes
+    of uncommitted elections are possible.
+    You are considering several concepts of action, briefly:
+
+    [1] To be honest, to speak only the truth,
+    not to enter any dubious alliances with competitors,
+    to play cleanly.
+
+    [2] To distribute unrealistic promises to voters,
+    such as halving taxes, raising the minimum wage 5 times,
+    cutting utility tariffs 3 times, creating 2 million new jobs
+    in the first year, building 30,000 kilometers of roads,
+    50 modern hospitals , eradicate corruption, and so on.
+    You do not resort to the black PR of competitors
+    and do not conclude deals with them.
+
+    [3] You understand that the chances of going into
+    the second round and losing more than winning,
+    therefore accept the offer of the incumbent president
+    to become a technical candidate to draw votes from the opposition,
+    and not to go to the second round, but to recognize his victory
+    in exchange for the post of prime minister .
+
+    [4] We must fight with any available methods,
+    all means are good for achieving a noble goal!
+    History will justify us. Such trifles as small falsifications
+    of vote counting, and this is not a black PR,
+    but just tell the truth with a slight exaggeration,
+    so that the voters remember it better.
+    In general, politics is the art of the possible,
+    so it is possible to compromise with one's conscience ..."""
+
+TELL_TRUE_PLAY_CLEANLY = """
+    Perhaps you were in the wrong place at the wrong time.
+    Today in Ukrainian politics truth and honesty to anyone
+    You are not needed, you are a dangerous person for this system and she is you
+    throws it away.
+"""
+
+WITH_FALSICATION_TO_2ND_ELECT = """
+
 """
