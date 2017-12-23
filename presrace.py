@@ -194,10 +194,12 @@ class FSM(object):
     """
     This is a map of major milestones and game handlers.
     """
-    def __init__(self):
+    def __init__(self, character):
+        self.char = character
         self.states = {}
         self.transitions = {}
         self.curState = None
+        self.prevState = None
         self.trans = None
 
     def add_transition(self, transName, transition):
@@ -208,56 +210,71 @@ class FSM(object):
 
     def set_state(self, stateName):
         # assign previos state as current state
-        #self.prevState = self.curState
+        self.prevState = self.curState
         # assign current state of got stateName
         # that is key to dictionary states
         self.curState = self.states[stateName]
 
     def to_transition(self, toTrans):
         self.trans = toTrans
-        self.newState = self.transitions[self.trans]
 
     def execute(self):
-        
+        # if return attribute "trans" than go to next activites
+        if self.trans:
+            self.curState.exit()   # exit from current state
+            self.trans.execute()   # execute print "Transitioning..."
+            # get the name to to_transition function from current State
+            # and pass one to set_state function as stateName argument
+            self.set_state(self.trans.toState)
+            self.curState.enter()  # open the new state as currently
+            self.trans = None      # remove old value of trans variable
+            self.curState.execute()    # run the moving current state
 
+##============================================================================
+## IMPLEMENTATION
+
+
+class Char(object):
+    def __init__(self):
+        self.FSM = FSM(self)
+
+class GameMaid(Char):
+    def __init__(self):
+        self.FSM = FSM(self)
+
+        ##STATES
+        self.FSM.add_state("Start", Start(self.FSM))
+        self.FSM.add_state("Money", Money(self.FSM))
+        self.FSM.add_state("Revolution", Revolution(self.FSM))
+        self.FSM.add_state("First_Election", FirstElection(self.FSM))
+        self.FSM.add_state("Second_Election", SecondElection(self.FSM))
+        self.FSM.add_state("Loser", Loser(self.FSM))
+        self.FSM.add_state("President", President(self.FSM))
+        self.FSM.add_state("Premier_Ministre", PremierMinistre(self.FSM))
+        self.FSM.add_state("Finish", Finish(self.FSM))
+
+        ##TRANSITIONS
+        self.FSM.add_transition("toStart", Transition("Start"))
+        self.FSM.add_transition("toMoney", Transition("Money"))
+        self.FSM.add_transition("toRevolution", Transition("Revolution"))
+        self.FSM.add_transition("toFirst_Election", \
+                                    Transition("First_Election"))
+        self.FSM.add_transition("toSecond_Election", \
+                                    Transition("Second_Election"))
+        self.FSM.add_transition("toLoser", Transition("Loser"))
+        self.FSM.add_transition("toPresident", Transition("President"))
+        self.FSM.add_transition("toPremier_Ministre", \
+                                    Transition("Premier_Ministre"))
+        self.FSM.add_transition("toFinish", Transition("Finish"))
+    
+        self.FSM.set_state("Start")
+    
+    def execute(self):    
+        self.FSM.execute()
 
 ##=============================================================================
 
 if __name__ == '__main__':
    
-##============================================================================
-## IMPLEMENTATION
-
-    race = FSM()
-
-    ##STATES
-    race.add_state("Start", Start(race))
-    race.add_state("Money", Money(race))
-    race.add_state("Revolution", Revolution(race))
-    race.add_state("First_Election", FirstElection(race))
-    race.add_state("Second_Election", SecondElection(race))
-    race.add_state("Loser", Loser(race))
-    race.add_state("President", President(race))
-    race.add_state("Premier_Ministre", PremierMinistre(race))
-    race.add_state("Finish", Finish(race))
-
-    ##TRANSITIONS
-    race.add_transition("toStart", Transition("Start"))
-    race.add_transition("toMoney", Transition("Money"))
-    race.add_transition("toRevolution", Transition("Revolution"))
-    race.add_transition("toFirst_Election", \
-                                Transition("First_Election"))
-    race.add_transition("toSecond_Election", \
-                                Transition("Second_Election"))
-    race.add_transition("toLoser", Transition("Loser"))
-    race.add_transition("toPresident", Transition("President"))
-    race.add_transition("toPremier_Ministre", \
-                                Transition("Premier_Ministre"))
-    race.add_transition("toFinish", Transition("Finish"))
-            
-    s = race.set_state("Start") 
-    
-    race.execute()
-
-
+    gm = GameMaid()
 
