@@ -17,7 +17,7 @@ class Transition(object):
         self.toState = toState
 
     def execute(self):
-        print("\n\nTransitioning to next situation...\n\n")
+        print("\nTransitioning to next situation...\n")
         time.sleep(5)
 
 
@@ -64,7 +64,7 @@ class Start(State):
             self.FSM.to_transition("toStart")
 
     def exit(self):
-        print("\n\nYou got choice, let's go next.\n\n")
+        print("\nYou got choice, let's go next.\n")
 
 class Money(State):
     """Get choice to take MONEY from somebody."""
@@ -127,11 +127,16 @@ class FirstElection(State):
         choice = input("--> ")
         if choice == "I will only tell the truth!":
             print(textwrap.dedent(phrases.TELL_TRUE_PLAY_CLEANLY))
+            self.FSM.to_transition("toLoser")
         elif choice == "I can spread unrealistic promises to voters!":
             print(textwrap.dedent(phrases.UNREALISTIC_PROMISES))
-
-        elif choice == "4":
+            self.FSM.to_transition("toPresident")
+        elif choice == "I will become a technical candidate.":
+            print(textwrap.dedent(phrases.AGREEMENT_TO_PM))
+            self.FSM.to_transition("toPremier_Ministre")
+        elif choice == "I will fight by any available means.":
             print(textwrap.dedent(phrases.WITH_FALSICATION_TO_2ND_ELECT))
+            self.FSM.to_transition("toSecond_Election")
 
 
 
@@ -190,8 +195,8 @@ class Finish(State):
 #        print("You won!")
 
     def execute(self):
-        print("You won!")    
-        print("Bye, bye! ))")
+        print("\n\t\tYou won!")    
+        print("\t\t\tBye, bye! ))")
         exit(1)
 
 ##============================================================================
@@ -296,5 +301,6 @@ class GameMaid(Char):
 if __name__ == '__main__':
    
     gm = GameMaid()   
-    gm.execute()
+    while True:
+        gm.execute()  # now working but double time need input-return choice...
 

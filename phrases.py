@@ -176,10 +176,22 @@ FIRST_ELECTION_INTRODUCTION = """
 TELL_TRUE_PLAY_CLEANLY = """
     Perhaps you were in the wrong place at the wrong time.
     Today in Ukrainian politics truth and honesty to anyone
-    You are not needed, you are a dangerous person for this system and she is you
-    throws it away.
+    You are not needed, you are a dangerous person 
+    for this system and she is you throws it away.
 """
 
 WITH_FALSICATION_TO_2ND_ELECT = """
-
+    Now the main goal to win. 
+    Let's to second tour of election!
 """
+UNREALISTIC_PROMISES = """
+    Yes!
+    Hear everyone!
+    To live in a new way!
+"""
+
+AGREEMENT_TO_PM = """
+    Better consolidate powers to make  more reforms to country!
+"""
+
+
