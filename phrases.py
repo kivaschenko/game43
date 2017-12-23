@@ -4,12 +4,18 @@ START_INTRODUCTION = """
     You agree at least get post of premier ministre too, for begin.
     You have few possibilities but some variants are maybe.
 
+  
     You can:
     [1] To achieve this goal, we must seek compromises.
         Politics is the art of the possible. ,
+        -------------------------------------
+        to choise type: "I seek compromises!" and ENTER
 
+ 
     [2] I do not need money! I do not want to depend on anyone.
         I can do it without money.
+        --------------------------
+        to choice type: "No money!" and ENTER
 
     What the strategy you will choice?
 """
@@ -26,21 +32,30 @@ NO_MONEY = """
 MONEY_INTRODUCTION = """
     It's big money, brother!
     You have three options today.
-
-    You can conclude an agreement with foreign partners
+  
+  
+    [1] You can conclude an agreement with foreign partners
     and promise the development of democracy in the country.
     Then you will be helped to create your new party
-    and join the consolidated opposition.(enter "1")
+    and join the consolidated opposition.
+    -------------------------------------
+    to choice type: "join the opposition!" and ENTER
 
-    The second case is when you take money from both
+   
+    [2] The second case is when you take money from both
     the oligarch and foreign partners at the same time,
     but they do not know about each other.
-    Then you make your own political party to go your own way.(enter "2")
+    Then you make your own political party to go your own way.
+    ----------------------------------------------------------
+    to choice type: "I gonna go my way!"
 
-    Thirdly. Circumstances are such that you will be able to agree
+  
+    [3] Thirdly. Circumstances are such that you will be able to agree
     with only one of the oligarchs to create a new political party.
     Do you promise to service me at least 5 years
-    and lobby his interests in parliament.(enter "3")
+    and lobby his interests in parliament.
+    ----------------------------------------------
+    to choice type: "Only one oligarch." and ENTER
 """
 ANTI_CORRUPTION = """
     Two weeks later...
@@ -52,13 +67,19 @@ REVOLUTION_INTRODUCTION = """
     You made a deal with radical nationalists and made a revolution.
 	Currently, there is no government in the country.
 
+
 	[1] You might want to use this situation
 		and get power in your hands right away.
 		You can declare yourself President.
 		Will you seek help from the military?
+		--------------------------------------------------
+		to choice type: "got the military help." and ENTER
+
 
 	[2] Or do you determine the date of early elections?
 		To make everything happen democratically.
+		----------------------------------------------------------
+		to choice type: "I gonna go democracy election!" and ENTER
 
 	What will be your choice?
 """
@@ -111,10 +132,14 @@ FIRST_ELECTION_INTRODUCTION = """
     of uncommitted elections are possible.
     You are considering several concepts of action, briefly:
 
+      
     [1] To be honest, to speak only the truth,
     not to enter any dubious alliances with competitors,
     to play cleanly.
-
+    -------------------------------------------------------
+    to choice type: "I will only tell the truth!" and ENTER
+    
+    
     [2] To distribute unrealistic promises to voters,
     such as halving taxes, raising the minimum wage 5 times,
     cutting utility tariffs 3 times, creating 2 million new jobs
@@ -122,22 +147,31 @@ FIRST_ELECTION_INTRODUCTION = """
     50 modern hospitals , eradicate corruption, and so on.
     You do not resort to the black PR of competitors
     and do not conclude deals with them.
-
+    ------------------------------------------------------------------------
+    to choice type: "I can spread unrealistic promises to voters!" and ENTER
+    
+    
     [3] You understand that the chances of going into
     the second round and losing more than winning,
     therefore accept the offer of the incumbent president
     to become a technical candidate to draw votes from the opposition,
     and not to go to the second round, but to recognize his victory
-    in exchange for the post of prime minister .
+    in exchange for the post of prime minister.
+    -----------------------------------------------------------------------
+    to choice type: "I will become a technical candidate." and ENTER
+    
 
-    [4] We must fight with any available methods,
+    [4] We must fight by any available means,
     all means are good for achieving a noble goal!
     History will justify us. Such trifles as small falsifications
     of vote counting, and this is not a black PR,
     but just tell the truth with a slight exaggeration,
     so that the voters remember it better.
     In general, politics is the art of the possible,
-    so it is possible to compromise with one's conscience ..."""
+    so it is possible to compromise with one's conscience ...
+    ------------------------------------------------------------------
+    to choice type: "I will fight by any available means." and ENTER    
+"""
 
 TELL_TRUE_PLAY_CLEANLY = """
     Perhaps you were in the wrong place at the wrong time.
