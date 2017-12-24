@@ -1,32 +1,60 @@
-class StateMachine(object):
-    def __init__(self):
-        self.handlers = {}
-        self.startState = None
-        self.endStates = []
+#!/usr/bin/env python3
+#-*- coding:utf-8 -*-
 
-    def add_state(self, name_state, handler, end_state=0):
-        name_state = name_state.upper()
-        # Assign the input handler value to key name_state in dictionary self.handlers
-        self.handlers[name_state] = handler
-        # if current handler is last
+##============================================================================
+## FINITE STATE MACHINE
+
+class FSM(object):
+    """
+    This is a map of major milestones and game handlers.
+    """
+    def __init__(self, character):
+        self.char = character
+        self.states = {}
+        self.transitions = {}
+        self.curState = None
+        self.prevState = None
+        self.end_states = []
+        self.trans = None
+
+    def add_transition(self, transName, transition):
+        self.transitions[transName] = transition
+
+
+    def add_state(self, stateName, state, end_state=0):
+        self.states[stateName] = state
         if end_state:
-            self.endStates.append(name_state)
+            self.end_states.append(state)
+            
+    def set_state(self, stateName):
+        # assign previos state as current state
+        self.prevState = self.curState
+        # assign current state of got stateName
+        # that is key to dictionary states self.curState = Start(self.FSM)
+        self.curState = self.states[stateName]
 
-    def set_start(self, name_state):
-        self.startState = name_state.upper()
+    def to_transition(self, toTrans):
+        """The function gets the value of toTrans, which is the name
+        key in the dictionary of "self.transitions" and calls on this key
+        object is a Transition object with the argument "Money".
+        Returns a new class object and appends a name to it
+        self.trans """
+        
+        # for example  if got toTans = "toMoney" then 
+        # self.trans = Transition("Money")
+        self.trans = self.transitions[toTrans] 
 
-    def run(self, newState):
-        try:
-            handler = self.handlers[self.startState]
-        except:
-            raise InitializationError("must call .set_start() before .run()")
-        if not self.endStates:
-            raise InitializationError("at least one state must be an end_state")
-
-        while True:
-            currentState = handler(newState)
-            if currentState.upper() in self.endStates:
-                print("reached", currentState)
+    def execute(self):
+        """This engine get """
+        self.curState.execute()    
+        while (self.trans):           # Transition("Money")
+            self.curState.exit()   # print about exit from current state
+            self.trans.execute()   # execute print "Transitioning..."    
+            # get the name to to_transition function from current State
+            # and pass one to set_state function as stateName argument
+            # for example : self.set_state("Money")
+            self.set_state(self.trans.toState) 
+            self.trans = None      # remove old value of trans variable
+            if self.curState in self.end_states:
                 break
-            else:
-                handler = self.handlers[newState.upper()]
+            self.curState.execute()    # Money(self.FSM).execute() 

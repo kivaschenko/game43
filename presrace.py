@@ -6,6 +6,7 @@ import random
 import textwrap
 import phrases
 import time
+from statemachine import FSM
 ##============================================================================
 ## TRANSITIONS
 
@@ -18,7 +19,7 @@ class Transition(object):
 
     def execute(self):
         print("\nTransitioning to next situation...\n")
-        time.sleep(5)
+        time.sleep(3)
 
 
 ##============================================================================
@@ -29,10 +30,6 @@ class State(object):
         object with names of current state"""
     def __init__(self, FSM):
         self.FSM = FSM
-
-#    def enter(self):
-#        print("This condition has not yet been written.")
-#        print("Subclass it and implement enter().")
 
     def execute(self):
         print("This condition has not yet been written.")
@@ -47,9 +44,6 @@ class Start(State):
     def __init__(self, FSM):
         self.FSM = FSM
 
-#    def enter(self):
-#        print(textwrap.dedent(phrases.START_INTRODUCTION))
-
     def execute(self):
         print(textwrap.dedent(phrases.START_INTRODUCTION))    
         choice = input("--> ")
@@ -63,17 +57,12 @@ class Start(State):
             print("DOESN'T COMPUTE!")
             self.FSM.to_transition("toStart")
 
-    def exit(self):
-        print("\nYou got choice, let's go next.\n")
 
 class Money(State):
     """Get choice to take MONEY from somebody."""
 
     def __init__(self, FSM):
         self.FSM = FSM
-
-#    def enter():
-#        print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
 
     def execute(self):
         print(textwrap.dedent(phrases.MONEY_INTRODUCTION))
@@ -82,7 +71,7 @@ class Money(State):
             print(textwrap.dedent(phrases.WITH_OPPO_TO_1ST_ELECT))
             self.FSM.to_transition("toFirst_Election")
         elif choice == "I gonna go my way!":
-            print(textwrap.dedent(phrases.ANTI_CORRUPTION))
+            print(textwrap.dedent(phrases.YOU_ARE_REVOLUTIONER))
             self.FSM.to_transition("toRevolution")
         elif choice == "Only one oligarch.":
             print(textwrap.dedent(phrases.DEAL_WITH_RADICALS))
@@ -97,16 +86,13 @@ class Revolution(State):
     def __init__(self, FSM):
         self.FSM = FSM
 
-#    def enter(self):
-#        print(textwrap.dedent(phrases.REVOLUTION_INTRODUCTION))
-
     def execute(self):
         print(textwrap.dedent(phrases.REVOLUTION_INTRODUCTION))    
         choice = input("--> ")
-        if choice == "got the military help.":
+        if choice == "I gonna go democracy election!":
             print(textwrap.dedent(phrases.WITH_OPPO_TO_1ST_ELECT))
             self.FSM.to_transition("toFirst_Election")
-        elif choice == "I gonna go democracy election!":
+        elif choice == "I got the military help.":
             print(textwrap.dedent(phrases.DICTATOR))
             self.FSM.to_transition("toLoser")
         else:
@@ -118,9 +104,6 @@ class FirstElection(State):
 
     def __init__(self, FSM):
         self.FSM = FSM
-
-#    def enter(self):
-#        print(textwrap.dedent(phrases.FIRST_ELECTION_INTRODUCTION))
 
     def execute(self):
         print(textwrap.dedent(phrases.FIRST_ELECTION_INTRODUCTION))    
@@ -137,11 +120,32 @@ class FirstElection(State):
         elif choice == "I will fight by any available means.":
             print(textwrap.dedent(phrases.WITH_FALSICATION_TO_2ND_ELECT))
             self.FSM.to_transition("toSecond_Election")
-
+        else:
+            print("DOESN'T COMPUTE!")
+            self.FSM.to_transition("toFirst_Election")
 
 
 class SecondElection(State):
-    pass
+    """Second Edition state"""
+    
+    def __init__(self, FSM):
+        self.FSM = FSM
+        
+    def execute(self):
+        print(textwrap.dedent(phrases.SECOND_ELECTION_INTRODUCTION))
+        choice = input("--> ")
+        if choice == "I can promise voters everything they want to hear!":
+            print(textwrap.dedent(phrases.UNREALISTIC_PROMISES))
+            self.FSM.to_transition("toPresident")
+        elif choice == "I use black PR!":
+            print(textwrap.dedent(phrases.ANTI_CORRUPTION))
+            self.FSM.to_transition("toLoser")            
+        elif choice == "I made deal with opponent!":
+            print(textwrap.dedent(phrases.AGREEMENT_TO_PM))
+            self.FSM.to_transition("toPremier_Ministre")        
+        else:
+            print("DOESN'T COMPUTE!")
+            self.FSM.to_transition("toSecond_Election")        
 
 class Loser(State):
     """ State when you lose the game. """
@@ -155,8 +159,9 @@ class Loser(State):
         print("\t\t","-" * len(joke))
         print('\t\t',joke.upper())
         print("\t\t", "-" * len(joke))
-        print("\tYou lose!" * 3)
-        self.FSM.to_transition("toFinish")
+        print("\t" * 6, "You lose!")
+#        self.FSM.to_transition("toFinish")
+        exit(1)
 
 class President(State):
     """The state when player reaches President post."""
@@ -164,12 +169,11 @@ class President(State):
     def __init__(self, FSM):
         self.FSM = FSM
 
-#    def enter(self):
-#        print(textwrap.dedent(phrases.INAUGURATION))
-
     def execute(self):
-        print(textwrap.dedent(phrases.INAUGURATION))    
-        self.FSM.to_transition("toFinish")
+        print("\t\t\t",textwrap.dedent(phrases.INAUGURATION))    
+#        self.FSM.to_transition("toFinish")
+        exit(1)
+        
 
 class PremierMinistre(State):
     """Premier Ministre state of game """
@@ -178,81 +182,28 @@ class PremierMinistre(State):
         self.FSM = FSM
 
     def execute(self):
+        print("\t\t\t",textwrap.dedent(phrases.YOU_PREMIER))
         jokes = phrases.PREMIER_MINISTRE
         joke = random.choice(jokes)
-        print("#" * len(joke))
-        print(joke)
-        print("#" * len(joke))
-        self.FSM.to_transition("toFinish")
-
-class Finish(State):
-    """ Game over."""
-
-    def __init__(self, FSM):
-        self.FSM = FSM
-
-#    def enter(self):
-#        print("You won!")
-
-    def execute(self):
-        print("\n\t\tYou won!")    
-        print("\t\t\tBye, bye! ))")
+        print("\t\t\t","#" * len(joke))
+        print("\t\t\t", joke)
+        print("\t\t\t", "#" * len(joke))
+#        self.FSM.to_transition("toFinish")
         exit(1)
-
-##============================================================================
-## FINITE STATE MACHINE
-
-class FSM(object):
-    """
-    This is a map of major milestones and game handlers.
-    """
-    def __init__(self, character):
-        self.char = character
-        self.states = {}
-        self.transitions = {}
-        self.curState = None
-        self.prevState = None
-        self.trans = None
-
-    def add_transition(self, transName, transition):
-        self.transitions[transName] = transition
-
-    def add_state(self, stateName, state):
-        self.states[stateName] = state
-
-    def set_state(self, stateName):
-        # assign previos state as current state
-        self.prevState = self.curState
-        # assign current state of got stateName
-        # that is key to dictionary states self.curState = Start(self.FSM)
-        self.curState = self.states[stateName]
-
-    def to_transition(self, toTrans):
-        """The function gets the value of toTrans, which is the name
-        key in the dictionary of "self.transitions" and calls on this key
-        object is a Transition object with the argument "Money".
-        Returns a new class object and appends a name to it
-        self.trans """
         
-        # for example  if got toTans = "toMoney" then 
-        # self.trans = Transition("Money")
-        self.trans = self.transitions[toTrans] 
+        
+#class Finish(State):
+#    """ Game over."""
+#
+#    def __init__(self, FSM):
+#        self.FSM = FSM
+#
+#    def execute(self):
+#        print("\n\t\tYou won!")    
+#        print("\t\t\tBye, bye! ))")
+#        exit(1)
 
-    def execute(self):
-#        self.curState.enter()
-        self.curState.execute()    
-        if (self.trans):           # Transition("Money")
-            self.curState.exit()   # print about exit from current state
-            self.trans.execute()   # execute print "Transitioning..."    
-            # get the name to to_transition function from current State
-            # and pass one to set_state function as stateName argument
-            # for example : self.set_state("Money")
-            self.set_state(self.trans.toState) 
-#            print("self.set_state(self.trans.toState) --- ", self.set_state(self.trans.toState) )
-#            self.curState.enter()  # Money(self.FSM).enter()
-#            print("self.curState.enter() --- ", self.curState.enter())
-            self.trans = None      # remove old value of trans variable
-            self.curState.execute()    # Money(self.FSM).execute() 
+
 
 ##============================================================================
 ## IMPLEMENTATION
@@ -272,10 +223,11 @@ class GameMaid(Char):
         self.FSM.add_state("Revolution", Revolution(self.FSM))
         self.FSM.add_state("First_Election", FirstElection(self.FSM))
         self.FSM.add_state("Second_Election", SecondElection(self.FSM))
-        self.FSM.add_state("Loser", Loser(self.FSM))
-        self.FSM.add_state("President", President(self.FSM))
-        self.FSM.add_state("Premier_Ministre", PremierMinistre(self.FSM))
-        self.FSM.add_state("Finish", Finish(self.FSM))
+        self.FSM.add_state("Loser", Loser(self.FSM), end_state=1)
+        self.FSM.add_state("President", President(self.FSM), end_state=1)
+        self.FSM.add_state("Premier_Ministre", \
+                           PremierMinistre(self.FSM), end_state=1)
+#        self.FSM.add_state("Finish", Finish(self.FSM), end_state=1)
 
         ##TRANSITIONS
         self.FSM.add_transition("toStart", Transition("Start"))
