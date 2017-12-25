@@ -94,6 +94,17 @@ INAUGURATION = """
     ### \_|$|_/**\*/**\_|$|_/ ###
     #############################
 """
+
+CODE_DOOR_PREMIER = """
+   Let's play a simple game. Guess the code to the door 
+   of the cabinet. If you get the code wrong 9 times the
+   the lock closes and you can't get the post premier. 
+   The code is 3 digits from 1 to 9.
+   But there is good news! You already know two digits, 
+   so only guess one and try it 5 times.
+   If you guess, you're premier.
+"""
+
 YOU_PREMIER = """
     YOU ARE RPEMIER !!!
     NOT BAD... 

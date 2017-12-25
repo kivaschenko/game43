@@ -4,8 +4,10 @@
 import sys
 import random
 import textwrap
-import phrases
 import time
+# Import module with texts to print in states of the game
+import phrases
+# Import module with class FSM where algorithmic state machine
 from statemachine import FSM
 ##============================================================================
 ## TRANSITIONS
@@ -182,13 +184,26 @@ class PremierMinistre(State):
         self.FSM = FSM
 
     def execute(self):
-        print("\t\t\t",textwrap.dedent(phrases.YOU_PREMIER))
-        jokes = phrases.PREMIER_MINISTRE
-        joke = random.choice(jokes)
-        print("\t\t\t","#" * len(joke))
-        print("\t\t\t", joke)
-        print("\t\t\t", "#" * len(joke))
-#        self.FSM.to_transition("toFinish")
+    
+        print(textwrap.dedent(phrases.CODE_DOOR_PREMIER))
+        
+        code = f"{random.randint(1,9)}"
+        guesses = 0
+        guess = input("[keypad]> ")
+        
+        while guess != code and guesses < 4:
+            print("BZZZZEDDD!")
+            guesses += 1
+            guess = input("[keypad]> ")
+            
+        if guess == code:
+            print("\t\t\t",textwrap.dedent(phrases.YOU_PREMIER))
+            jokes = phrases.PREMIER_MINISTRE
+            joke = random.choice(jokes)
+            print("\t\t\t","#" * len(joke))
+            print("\t\t\t", joke)
+            print("\t\t\t", "#" * len(joke))
+#           self.FSM.to_transition("toFinish")
         exit(1)
         
         
@@ -254,5 +269,5 @@ if __name__ == '__main__':
    
     gm = GameMaid()   
     while True:
-        gm.execute()  # now working but double time need input-return choice...
+        gm.execute() 
 
